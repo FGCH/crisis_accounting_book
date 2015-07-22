@@ -6,8 +6,10 @@
 # ---------------------------------------------------------------------------- #
 
 # Load required packages
+library(dplyr)
 library(ggplot2)
 library(gridExtra)
+library(DataCombine)
 
 # Set working directory. Change as needed
 possible_wd <- c('/git_repositories/whose_account_book/')
@@ -22,13 +24,19 @@ res <- residuals(m_r1)
 for_plot <- data.frame(country = sub_debt$country, 
                        year = sub_debt$year, 
                        residuals = res,
+                       change_resid = sub_debt$rs_change_debt,
                        post_election = sub_debt$election_year_1)
 
 for_plot$year <- as.integer(as.character(for_plot$year))
 
+for_plot <- for_plot %>% arrange(country, year)
+
 for_plot$post_election_year <- for_plot$year * 
                                 as.numeric(as.character(for_plot$post_election))
 for_plot$post_election_year[for_plot$post_election == 0] <- NA
+
+for_plot <- subset(for_plot, !(country %in% c('Indonesia', 'India', 
+                                              'Russian Federation')))
 
 # Plot
 comb_plot <- list()

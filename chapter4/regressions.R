@@ -12,10 +12,11 @@ library(plm)
 library(DataCombine)
 library(ggplot2)
 
-# Set working directory. Change as needed.
-setwd('/git_repositories/financial_crisis_fiscal_policy/')
+# Set working directory. Change as needed
+possible_wd <- c('/git_repositories/whose_account_book/')
+repmis::set_valid_wd(possible_wd)
 
-comb <- import('analysis_data/covariate_data/epfms_covariates.csv')
+comb <- import('chapter4/covariate_data/finstress_covariates.csv')
 
 # Convert key varaiables to factors
 comb$iso2c <- comb$iso2c %>% as.factor
@@ -119,3 +120,4 @@ m6_t1 <- lm(rs_change_debt ~ rs_change_debt_1 + rs_change_spend_1 +
 # Spending
 m7_t1 <- lm(rs_change_spend ~ rs_change_spend_1 + election_year_1 + lpr + 
                 execrlc + polconiii + fixed_exchange, data = sub_gov_spend)
+
